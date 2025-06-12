@@ -1,6 +1,6 @@
 # 🎟️ luma-scraper
 
-A CLI tool to log into your [Luma](https://lu.ma) account, fetch your event guest lists, and extract attendee email addresses into a CSV.
+A CLI tool to log into your [Luma](https://lu.ma) account, fetch all your event guest lists, and extract attendee email addresses into a CSV.
 
 Useful for organizers who want a quick export of attendee data from multiple events.
 
