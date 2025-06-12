@@ -51,7 +51,7 @@ def send_otp(email):
             sys.exit(1)
 
 
-def sumbit_otp(email, otp):
+def submit_otp(email, otp):
     print("Submitting OTP")
 
     url = "https://api.lu.ma/auth/email/sign-in-with-code"
@@ -181,7 +181,7 @@ def main():
         case 1:
             send_otp(email)
             otp = input("Enter the OTP sent to your email: ")
-            auth_token, api_id = sumbit_otp(email, otp)
+            auth_token, api_id = submit_otp(email, otp)
 
             event_list = fetch_events(auth_token, api_id)                
 
@@ -202,7 +202,7 @@ def main():
         case 2:
             send_otp(email)
             otp = input("Enter the OTP sent to your email: ")
-            auth_token, api_id = sumbit_otp(email, otp)
+            auth_token, api_id = submit_otp(email, otp)
 
             with open('failed.txt', 'r') as file:
                 event_list = [line.strip() for line in file]
