@@ -116,6 +116,7 @@ def fetch_events(auth_token, api_id):
                         
         case _:
             print(f"Unknown error, status code: {response.status_code}")
+            sys.exit(1)
 
 def fetch_download_url(auth_token, event_api_id):
     print("Fetching event csv download url")
@@ -125,7 +126,7 @@ def fetch_download_url(auth_token, event_api_id):
     headers = {
     'x-luma-client-type': 'luma-web',
     'x-luma-client-version': 'f059af82310ed04acf46a75eae5f4d6a9d68b42c',
-    'x-luma-web-url': 'https://lu.ma/event/manage/evt-/guests',
+    'x-luma-web-url': f'https://lu.ma/event/manage/{event_api_id}/guests',
     'Cookie': f'luma.first-page=%2F; luma.auth-session-key={auth_token}; luma.native-referrer=https%3A%2F%2Flu.ma%2Fhome;',
     **device_headers
     }
@@ -181,13 +182,15 @@ def main():
             send_otp(email)
             otp = input("Enter the OTP sent to your email: ")
             auth_token, api_id = sumbit_otp(email, otp)
-            event_list = fetch_events(auth_token, api_id)
+
+            event_list = fetch_events(auth_token, api_id)                
 
             download_urls = []
 
             for event in event_list:
                 download_url = fetch_download_url(auth_token, event)
-                download_urls.append(download_url)
+                if download_url:
+                    download_urls.append(download_url)
 
             for url in download_urls:
                 csv = download_csv(url)
@@ -202,13 +205,14 @@ def main():
             auth_token, api_id = sumbit_otp(email, otp)
 
             with open('failed.txt', 'r') as file:
-                event_list = file.readlines()
+                event_list = [line.strip() for line in file]
 
             download_urls = []
 
             for event in event_list:
                 download_url = fetch_download_url(auth_token, event)
-                download_urls.append(download_url)
+                if download_url:
+                    download_urls.append(download_url)
 
             for url in download_urls:
                 csv = download_csv(url)
